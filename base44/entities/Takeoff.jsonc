@@ -1,0 +1,82 @@
+{
+  "name": "Takeoff",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Project",
+      "relation": "Project"
+    },
+    "name": {
+      "type": "string",
+      "title": "Takeoff Name"
+    },
+    "document_id": {
+      "type": "string",
+      "title": "Source Document",
+      "relation": "Document"
+    },
+    "page_number": {
+      "type": "number",
+      "default": 1,
+      "title": "Page Number"
+    },
+    "scale_ratio": {
+      "type": "number",
+      "title": "Scale Ratio (feet per pixel)",
+      "default": 1
+    },
+    "scale_label": {
+      "type": "string",
+      "title": "Scale Label"
+    },
+    "background_image_url": {
+      "type": "string",
+      "format": "file",
+      "title": "Background Image"
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

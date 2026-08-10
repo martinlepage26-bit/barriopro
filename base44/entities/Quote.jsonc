@@ -1,0 +1,102 @@
+{
+  "name": "Quote",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Project",
+      "relation": "Project"
+    },
+    "quote_number": {
+      "type": "string",
+      "title": "Quote Number"
+    },
+    "scope_of_work": {
+      "type": "string",
+      "title": "Scope of Work"
+    },
+    "subtotal": {
+      "type": "number",
+      "default": 0,
+      "title": "Subtotal"
+    },
+    "tax": {
+      "type": "number",
+      "default": 0,
+      "title": "Tax"
+    },
+    "total": {
+      "type": "number",
+      "default": 0,
+      "title": "Total"
+    },
+    "expiration_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Expiration Date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Draft",
+        "Sent",
+        "Accepted",
+        "Rejected",
+        "Expired"
+      ],
+      "default": "Draft",
+      "title": "Status"
+    },
+    "terms": {
+      "type": "string",
+      "title": "Terms and Conditions"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "project_id",
+    "quote_number"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

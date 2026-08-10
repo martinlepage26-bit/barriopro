@@ -1,0 +1,81 @@
+{
+  "name": "FenceAssembly",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Assembly Name"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "height": {
+      "type": "number",
+      "title": "Height (ft)"
+    },
+    "material": {
+      "type": "string",
+      "title": "Material"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_name": {
+            "type": "string"
+          },
+          "quantity_per_100lf": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number"
+          },
+          "category": {
+            "type": "string"
+          },
+          "waste_percentage": {
+            "type": "number",
+            "default": 0
+          }
+        }
+      },
+      "title": "Components (per 100 LF)"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

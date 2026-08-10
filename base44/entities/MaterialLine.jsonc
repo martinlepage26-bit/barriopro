@@ -1,0 +1,101 @@
+{
+  "name": "MaterialLine",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Project",
+      "relation": "Project"
+    },
+    "product_id": {
+      "type": "string",
+      "title": "Product",
+      "relation": "Product"
+    },
+    "product_name": {
+      "type": "string",
+      "title": "Product Name"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 0,
+      "title": "Measured Quantity"
+    },
+    "waste_percentage": {
+      "type": "number",
+      "default": 0,
+      "title": "Waste %"
+    },
+    "purchase_qty": {
+      "type": "number",
+      "default": 0,
+      "title": "Purchase Quantity"
+    },
+    "sell_qty": {
+      "type": "number",
+      "default": 0,
+      "title": "Sell Quantity"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unit"
+    },
+    "cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Unit Cost"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category"
+    },
+    "is_labor": {
+      "type": "boolean",
+      "default": false,
+      "title": "Is Labor"
+    }
+  },
+  "required": [
+    "project_id",
+    "product_name"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

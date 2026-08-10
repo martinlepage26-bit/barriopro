@@ -1,0 +1,108 @@
+{
+  "name": "Estimate",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Project",
+      "relation": "Project"
+    },
+    "material_cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Material Cost"
+    },
+    "labor_cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Labor Cost"
+    },
+    "labor_hours": {
+      "type": "number",
+      "default": 0,
+      "title": "Labor Hours"
+    },
+    "labor_rate": {
+      "type": "number",
+      "default": 0,
+      "title": "Labor Rate ($/hr)"
+    },
+    "equipment_cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Equipment Cost"
+    },
+    "subcontractor_cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Subcontractor Cost"
+    },
+    "other_cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Other Cost"
+    },
+    "waste_percentage": {
+      "type": "number",
+      "default": 10,
+      "title": "Waste %"
+    },
+    "overhead_percentage": {
+      "type": "number",
+      "default": 0,
+      "title": "Overhead %"
+    },
+    "markup_percentage": {
+      "type": "number",
+      "default": 20,
+      "title": "Markup %"
+    },
+    "sales_tax_percentage": {
+      "type": "number",
+      "default": 0,
+      "title": "Sales Tax %"
+    }
+  },
+  "required": [
+    "project_id"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

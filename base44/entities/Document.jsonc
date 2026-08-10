@@ -1,0 +1,76 @@
+{
+  "name": "Document",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "Project",
+      "relation": "Project"
+    },
+    "name": {
+      "type": "string",
+      "title": "Document Name"
+    },
+    "file_url": {
+      "type": "string",
+      "format": "file",
+      "title": "File"
+    },
+    "file_type": {
+      "type": "string",
+      "title": "File Type"
+    },
+    "page_count": {
+      "type": "number",
+      "default": 1,
+      "title": "Page Count"
+    },
+    "revision": {
+      "type": "string",
+      "title": "Revision"
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

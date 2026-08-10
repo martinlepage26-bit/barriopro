@@ -1,0 +1,95 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Product Name"
+    },
+    "sku": {
+      "type": "string",
+      "title": "SKU"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Posts",
+        "Fabric",
+        "Rails",
+        "Gates",
+        "Fittings",
+        "Hardware",
+        "Concrete",
+        "Lumber",
+        "Fasteners",
+        "Labor",
+        "Equipment",
+        "Other"
+      ],
+      "default": "Other",
+      "title": "Category"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unit"
+    },
+    "cost": {
+      "type": "number",
+      "default": 0,
+      "title": "Cost"
+    },
+    "sell_price": {
+      "type": "number",
+      "default": 0,
+      "title": "Sell Price"
+    },
+    "supplier": {
+      "type": "string",
+      "title": "Supplier"
+    },
+    "material_type": {
+      "type": "string",
+      "title": "Material Type"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "title": "Active"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

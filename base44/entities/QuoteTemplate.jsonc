@@ -1,0 +1,58 @@
+{
+  "name": "QuoteTemplate",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Template Name"
+    },
+    "scope_of_work": {
+      "type": "string",
+      "title": "Scope of Work"
+    },
+    "terms": {
+      "type": "string",
+      "title": "Terms & Conditions"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    },
+    "default_markup_percentage": {
+      "type": "number",
+      "default": 20,
+      "title": "Default Markup %"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

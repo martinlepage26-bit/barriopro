@@ -1,0 +1,86 @@
+{
+  "name": "FenceSpec",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Specification Name"
+    },
+    "height": {
+      "type": "number",
+      "title": "Height (ft)"
+    },
+    "material": {
+      "type": "string",
+      "title": "Material"
+    },
+    "mesh": {
+      "type": "string",
+      "title": "Mesh"
+    },
+    "gauge": {
+      "type": "string",
+      "title": "Gauge"
+    },
+    "post_spacing": {
+      "type": "number",
+      "default": 10,
+      "title": "Post Spacing (ft)"
+    },
+    "post_type": {
+      "type": "string",
+      "title": "Post Type"
+    },
+    "rail": {
+      "type": "string",
+      "title": "Rail"
+    },
+    "fabric": {
+      "type": "string",
+      "title": "Fabric"
+    },
+    "finish": {
+      "type": "string",
+      "title": "Finish"
+    },
+    "pickets": {
+      "type": "string",
+      "title": "Pickets"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

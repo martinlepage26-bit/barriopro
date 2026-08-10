@@ -1,0 +1,118 @@
+{
+  "name": "FenceSegment",
+  "type": "object",
+  "properties": {
+    "takeoff_id": {
+      "type": "string",
+      "title": "Takeoff",
+      "relation": "Takeoff"
+    },
+    "fence_spec_id": {
+      "type": "string",
+      "title": "Fence Specification",
+      "relation": "FenceSpec"
+    },
+    "assembly_id": {
+      "type": "string",
+      "title": "Fence Assembly",
+      "relation": "FenceAssembly"
+    },
+    "layer_id": {
+      "type": "string",
+      "title": "Layer"
+    },
+    "label": {
+      "type": "string",
+      "title": "Label"
+    },
+    "geometry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        }
+      },
+      "title": "Geometry (points)"
+    },
+    "length_feet": {
+      "type": "number",
+      "title": "Length (ft)",
+      "default": 0
+    },
+    "gate_count": {
+      "type": "number",
+      "default": 0,
+      "title": "Gates"
+    },
+    "corner_count": {
+      "type": "number",
+      "default": 0,
+      "title": "Corners"
+    },
+    "end_count": {
+      "type": "number",
+      "default": 0,
+      "title": "Ends"
+    },
+    "gate_type": {
+      "type": "string",
+      "title": "Gate Type"
+    },
+    "gate_width": {
+      "type": "number",
+      "title": "Gate Width (ft)"
+    },
+    "scope_note": {
+      "type": "string",
+      "title": "Scope Note"
+    }
+  },
+  "required": [
+    "takeoff_id"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

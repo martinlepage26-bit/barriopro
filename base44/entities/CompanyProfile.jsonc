@@ -1,0 +1,63 @@
+{
+  "name": "CompanyProfile",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Company Name"
+    },
+    "logo_url": {
+      "type": "string",
+      "format": "file",
+      "title": "Logo"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "color": {
+      "type": "string",
+      "default": "#f59e0b",
+      "title": "Brand Color"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": null,
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
