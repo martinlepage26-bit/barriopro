@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +10,10 @@ import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 import { safeReturnTo } from "@/lib/authReturnTo";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Register() {
+  const { isAuthenticated } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,6 +21,10 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState("");
+
+  if (isAuthenticated) {
+    return <Navigate to={safeReturnTo()} replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,6 +74,19 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
+    setError("");
+    // Base44's SDK opens a popup instead of a full-page redirect when running
+    // inside an iframe (e.g. the app builder preview); a blocked popup fails
+    // silently there with no error surfaced back to us, so probe for the
+    // block ourselves first and show feedback instead of a dead button.
+    if (window !== window.parent) {
+      const testPopup = window.open("", "_blank", "width=1,height=1");
+      if (!testPopup) {
+        setError("Les fenêtres popup semblent bloquées. Veuillez les autoriser pour continuer avec Google, ou ouvrez cette page dans un nouvel onglet.");
+        return;
+      }
+      testPopup.close();
+    }
     base44.auth.loginWithProvider("google", safeReturnTo());
   };
 

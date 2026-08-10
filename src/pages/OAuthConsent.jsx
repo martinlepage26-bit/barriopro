@@ -120,8 +120,17 @@ export default function OAuthConsent() {
         throw new Error("Impossible de compléter l'autorisation. Veuillez réessayer.");
       }
       const data = await res.json();
-      window.location.href = data.redirect_url;
-      if (!/^https?:/i.test(data.redirect_url)) {
+      const redirectUrl = typeof data.redirect_url === "string" ? data.redirect_url.trim() : "";
+      // Any non-empty scheme is expected here (native AI clients redirect via
+      // custom schemes like cursor://), so this can't be an allow-list — just
+      // block the schemes a browser would execute in-page.
+      if (!redirectUrl || /^\s*(javascript|data|vbscript):/i.test(redirectUrl)) {
+        setError("Impossible de compléter l'autorisation. Veuillez réessayer.");
+        setSubmitting(false);
+        return;
+      }
+      window.location.href = redirectUrl;
+      if (!/^https?:/i.test(redirectUrl)) {
         // Custom-scheme redirect (native AI clients, e.g. cursor://): browsers
         // may block or not visibly navigate, so show a terminal state instead
         // of an eternal spinner.
@@ -129,7 +138,8 @@ export default function OAuthConsent() {
         setSubmitting(false);
       }
     } catch (e) {
-      setError(e.message);
+      console.error(e);
+      setError("Impossible de compléter l'autorisation. Veuillez réessayer.");
       setSubmitting(false);
     }
   };

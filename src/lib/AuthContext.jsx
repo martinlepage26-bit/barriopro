@@ -54,10 +54,12 @@ export const AuthProvider = ({ children }) => {
         if (appError.status === 403 && appError.data?.extra_data?.reason) {
           const reason = appError.data.extra_data.reason;
           if (reason === 'auth_required') {
-            setAuthError({
-              type: 'auth_required',
-              message: 'Authentication required'
-            });
+            // Don't set a top-level authError here: that would short-circuit
+            // AuthenticatedApp before <Routes> renders and bounce the user to
+            // the platform's external login instead of this app's own
+            // /login route. Leaving isAuthenticated/authChecked at their
+            // defaults lets ProtectedRoute run its own check and redirect
+            // internally when a protected route is actually requested.
           } else if (reason === 'user_not_registered') {
             setAuthError({
               type: 'user_not_registered',
@@ -103,14 +105,11 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setIsAuthenticated(false);
       setAuthChecked(true);
-      
-      // If user auth fails, it might be an expired token
-      if (error.status === 401 || error.status === 403) {
-        setAuthError({
-          type: 'auth_required',
-          message: 'Authentication required'
-        });
-      }
+      // Do not set a top-level authError here: that would short-circuit
+      // AuthenticatedApp before <Routes> renders and bounce the user to the
+      // platform's external login instead of this app's own /login route.
+      // A stale/expired token just leaves isAuthenticated=false, and
+      // ProtectedRoute's own redirect to /login handles it from there.
     }
   };
 

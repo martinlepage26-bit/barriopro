@@ -10,6 +10,9 @@ import AuthLayout from "@/components/AuthLayout";
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
+  const returnTo = searchParams.get("returnTo");
+  const loginLink = "/login" + (returnTo ? "?returnTo=" + encodeURIComponent(returnTo) : "");
+  const forgotPasswordLink = "/forgot-password" + (returnTo ? "?returnTo=" + encodeURIComponent(returnTo) : "");
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,7 +29,7 @@ export default function ResetPassword() {
     setLoading(true);
     try {
       await base44.auth.resetPassword({ resetToken, newPassword });
-      window.location.href = "/login";
+      window.location.href = loginLink;
     } catch (err) {
       setError(err.message || "Échec de la réinitialisation");
     } finally {
@@ -41,7 +44,7 @@ export default function ResetPassword() {
         title="Lien invalide"
         subtitle="Ce lien de réinitialisation est manquant ou invalide"
         footer={
-          <Link to="/forgot-password" className="text-primary font-medium hover:underline">
+          <Link to={forgotPasswordLink} className="text-primary font-medium hover:underline">
             Demander un nouveau lien
           </Link>
         }

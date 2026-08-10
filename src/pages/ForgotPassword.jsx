@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,9 @@ import { Mail, ArrowLeft, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 
 export default function ForgotPassword() {
+  const [searchParams] = useSearchParams();
+  const returnTo = searchParams.get("returnTo");
+  const loginLink = "/login" + (returnTo ? "?returnTo=" + encodeURIComponent(returnTo) : "");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -31,7 +34,7 @@ export default function ForgotPassword() {
       title="Réinitialiser le mot de passe"
       subtitle="Nous vous enverrons un lien pour le réinitialiser"
       footer={
-        <Link to="/login" className="text-primary font-medium hover:underline">
+        <Link to={loginLink} className="text-primary font-medium hover:underline">
           <ArrowLeft className="w-3 h-3 inline mr-1" />Retour à la connexion
         </Link>
       }

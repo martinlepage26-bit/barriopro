@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,10 @@ import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
 import { safeReturnTo } from "@/lib/authReturnTo";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Login() {
+  const { isAuthenticated } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,6 +19,10 @@ export default function Login() {
   // Post-login destination (e.g. the MCP OAuth consent page sends users here
   // with returnTo so the grant flow can resume). Same-origin paths only.
   const returnTo = safeReturnTo();
+
+  if (isAuthenticated) {
+    return <Navigate to={returnTo} replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +39,19 @@ export default function Login() {
   };
 
   const handleGoogle = () => {
+    setError("");
+    // Base44's SDK opens a popup instead of a full-page redirect when running
+    // inside an iframe (e.g. the app builder preview); a blocked popup fails
+    // silently there with no error surfaced back to us, so probe for the
+    // block ourselves first and show feedback instead of a dead button.
+    if (window !== window.parent) {
+      const testPopup = window.open("", "_blank", "width=1,height=1");
+      if (!testPopup) {
+        setError("Les fenêtres popup semblent bloquées. Veuillez les autoriser pour continuer avec Google, ou ouvrez cette page dans un nouvel onglet.");
+        return;
+      }
+      testPopup.close();
+    }
     base44.auth.loginWithProvider("google", returnTo);
   };
 
@@ -98,7 +117,10 @@ export default function Login() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Mot de passe</Label>
-            <Link to="/forgot-password" className="text-xs text-primary hover:underline">
+            <Link
+              to={"/forgot-password" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
+              className="text-xs text-primary hover:underline"
+            >
               Mot de passe oublié ?
             </Link>
           </div>
