@@ -8,5 +8,8 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "routes": [
+    { "pattern": "barriopro.pharos-ai.ca", "custom_domain": true }
+  ]
 }
