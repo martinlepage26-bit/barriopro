@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "barriopro",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-01",
+  "account_id": "1713c51cc6fbcf8d7143526b93495b76",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  }
+}
