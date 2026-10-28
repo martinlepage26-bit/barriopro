@@ -1,4 +1,22 @@
-# Base44 Project
+# BarrioPro — Construction Estimating and Bid Management
+
+BarrioPro brings project records, plan takeoffs, estimates, quotes, and bid tracking into one web application. The repository includes a React interface and Base44 entity definitions for the construction workflow.
+
+## Project at a glance
+
+| Area | Source |
+| --- | --- |
+| Projects and project detail | [Pages](src/pages/) |
+| Plan measurement and takeoff tools | [Takeoff components](src/components/takeoff/) |
+| Estimates, plans and quotes | [Project components](src/components/project/) |
+| Bid pipeline and calendar | [BidPipeline](src/pages/BidPipeline.jsx), [BidCalendar](src/pages/BidCalendar.jsx) |
+| Data model | [Base44 entities](base44/entities/) |
+
+**Stack:** React 18, Vite, Tailwind CSS, TanStack Query, React Router, and Base44.
+
+This source demonstrates a domain-specific workflow spanning project data, visual takeoff tools, and commercial documents. Running the full application requires a configured Base44 backend; the source alone does not establish production use or customer outcomes.
+
+## Development setup
 
 Use this repository to run and edit the app locally, then publish changes back through Base44.
 
